@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Item;
 use App\Repository\ItemRepository;
+use App\Services\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,20 +33,21 @@ class ItemController extends BaseController
     #[Route('/api/v1/store/item',methods: 'POST')]
 
 
-    public function addItem(Request $request): JsonResponse
+    public function addItem(Request $request,FileUploader $fileUploader): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
         $title = $data[Item::TITLE];
         $price = (float) $data[Item::PRICE];
         $description = $data[Item::DESCRIPTION];
-        $image = $data[Item::IMAGE];
+        $image = $request->files->get('image');
+        $urlImage =  $fileUploader->upload($image);
 
-        if (empty($title) || empty($price) || empty($description) || empty($image)) {
+        if (empty($title) || empty($price) || empty($description) || empty($urlImage)) {
             throw new NotFoundHttpException('Expecting mandatory parameters!');
         }
 
-       $item= $this->itemRepository->saveItem($title,$description,$image,$price);
+       $item= $this->itemRepository->saveItem($title,$description,$urlImage,$price);
 
         return $this->json($item,Response::HTTP_CREATED);
     }
@@ -53,7 +55,7 @@ class ItemController extends BaseController
     #[Route('/api/v1/update/item/{id}',methods: 'PUT')]
 
 
-    public function updateItem($id,Request $request): JsonResponse
+    public function updateItem($id,Request $request,FileUploader $fileUploader): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $item = $this->itemRepository->find($id);
@@ -61,13 +63,14 @@ class ItemController extends BaseController
             $title = $data[Item::TITLE];
             $price = (float) $data[Item::PRICE];
             $description = $data[Item::DESCRIPTION];
-            $image = $data[Item::IMAGE];
+            $image = $request->files->get('image');
+            $urlImage =  $fileUploader->upload($image);
 
             if (empty($title) || empty($price) || empty($description) || empty($image)) {
                 throw new NotFoundHttpException('Expecting mandatory parameters!');
             }
 
-            $item= $this->itemRepository->updateItem($item,$title,$description,$image,$price);
+            $item= $this->itemRepository->updateItem($item,$title,$description,$urlImage,$price);
 
         }
         return $this->json($item,Response::HTTP_OK);
