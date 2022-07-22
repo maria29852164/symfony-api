@@ -86,7 +86,7 @@ class ItemController extends BaseController
 
     }
 
-    #[Route('/api/v1/delete/item/{id}',methods: 'PUT')]
+    #[Route('/api/v1/delete/item/{id}',methods: 'DELETE')]
 
 
     public function delete($id): JsonResponse
