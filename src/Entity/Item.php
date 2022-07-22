@@ -2,22 +2,22 @@
 
 namespace App\Entity;
 
-use App\Repository\TaskRepository;
+use App\Repository\ItemRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: TaskRepository::class)]
-class Task
+#[ORM\Entity(repositoryClass: ItemRepository::class)]
+class Item
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column()]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 100)]
     private ?string $title = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
     private ?string $price = null;
 
     #[ORM\Column(type: Types::TEXT)]
