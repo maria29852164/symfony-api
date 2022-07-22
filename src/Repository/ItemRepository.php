@@ -61,6 +61,11 @@ class ItemRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function getItems(string $orderBy , string $type){
+        return $this->createQueryBuilder('i')
+            ->orderBy('i.'.$orderBy,$type)
+            ->getQuery();
+    }
 
 
 
