@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ItemRepository::class)]
-class Item
+class Item implements ItemInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

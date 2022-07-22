@@ -29,6 +29,29 @@ class ItemRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function saveItem(string $title,string $description, string $image, float $price){
+        $item = new Item();
+        $item->setDescription($description);
+        $item->setImage($image);
+        $item->setPrice($price);
+        $item->setTitle($title);
+        $this->getEntityManager()->persist($item);
+        return $item;
+
+
+    }
+    public function updateItem(Item $item,string $title,string $description, string $image, float $price){
+
+        $item->setDescription($description);
+        $item->setImage($image);
+        $item->setPrice($price);
+        $item->setTitle($title);
+        $this->getEntityManager()->persist($item);
+        $this->getEntityManager()->flush();
+        return $item;
+
+
+    }
 
     public function remove(Item $entity, bool $flush = false): void
     {
@@ -38,6 +61,8 @@ class ItemRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+
 
 //    /**
 //     * @return Item[] Returns an array of Item objects
@@ -63,4 +88,9 @@ class ItemRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function getAllItems(string $orderBy,string $type){
+        $dql = "SELECT * FROM item ORDER BY item.id DESC";
+        return $this->getEntityManager()->createQuery($dql);
+
+    }
 }
