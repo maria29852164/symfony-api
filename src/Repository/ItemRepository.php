@@ -36,6 +36,8 @@ class ItemRepository extends ServiceEntityRepository
         $item->setPrice($price);
         $item->setTitle($title);
         $this->getEntityManager()->persist($item);
+        $this->getEntityManager()->flush();
+
         return $item;
 
 
