@@ -68,6 +68,14 @@ class ItemRepository extends ServiceEntityRepository
             ->orderBy('i.'.$orderBy,$type)
             ->getQuery();
     }
+    public function getCount(){
+        return $this->createQueryBuilder('i')
+            ->select('count(i.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+
+}
 
 
 

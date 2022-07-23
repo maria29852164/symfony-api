@@ -28,6 +28,7 @@ class ItemController extends BaseController
         $type = $this->validateTypeRequest($request);
         $current_page = $this->validateCurrentPageRequest($request);
         $perPage = $this->validatePerPageRequest($request);
+        $count = $this->itemRepository->getCount();
 
         $query = $this->itemRepository->getItems($orderBy,$type);
         $pagination = $paginator->paginate(
@@ -36,7 +37,7 @@ class ItemController extends BaseController
             $perPage
         );
 
-        return $this->json($pagination,Response::HTTP_OK);
+        return $this->json(['results'=>$pagination, 'total'=> $count],Response::HTTP_OK);
 
     }
 
